@@ -1,6 +1,9 @@
 # VexVR-Compile
 ### A code simplifier and compiler for VexVR Python, You type the coords, and we do the rest.
 
+We are still developing this, and it will not be finished for a while, but we eventually want to turn this into a program or site to deal with normal Vex code as well as a version for VexVR
+
+
 ## Reference:
 
 **Leave comments of new Ideas to add to the compiler, we really want the input!**
