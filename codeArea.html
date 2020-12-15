@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <!-- CodeMirror - it just works -->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.52.2/codemirror.min.js">
+    </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.52.2/codemirror.min.css">
+    </link>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.52.2/theme/material.css">
+    </link>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.52.2/theme/material-darker.css">
+    </link>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.52.2/theme/material-palenight.css">
+    </link>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.52.2/theme/material-ocean.css">
+    </link>
+    <script type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.52.2/mode/python/python.min.js">
+    </script>
+</head>
+
+<body style="margin:0; overflow:auto">
+    <form><textarea id="codeArea"></textarea></form>
+    <script>
+        var textArea = document.getElementById('codeArea');
+        textArea.innerHTML =
+            '\#-------VEXCODE VR - Compiler\n\#\n\#\tWelcome to VEXCODE VR - Compiler!\n\#\n\#\n\#\n\#\n\#\n\#-------\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n'
+        var editor = CodeMirror.fromTextArea(textArea, {
+            lineNumbers: true,
+            styleActiveLine: true,
+            matchBrackets: true,
+            tabSize: 4,
+            mode: 'python',
+        });
+        editor.setSize("100%", "100%");
+
+        function selectTheme(theme) {
+            editor.setOption("theme", theme);
+            //document.getElementsByClassName('w3-code').style.backgroundColor = document.getElementById('CodeMirror').style.backgroundColor
+        }
+        var choice = (window.parent.location.hash && window.parent.location.hash.slice(1)) ||
+            (window.parent.location.search &&
+                decodeURIComponent(window.parent.location.search.slice(1)));
+        if (choice) {
+            editor.setOption("theme", choice);
+        }
+        CodeMirror.on(window.parent, "hashchange", function () {
+            var theme = window.parent.location.hash.slice(1);
+            if (theme) {
+                selectTheme(theme);
+            }
+        });
+
+
+    </script>
+</body>
+
+</html>

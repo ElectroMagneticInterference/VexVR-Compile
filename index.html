@@ -4,187 +4,143 @@
 <head>
     <title>VexVR-Compiler</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta charset="ISO-8859-1">
 
     <!-- Google Fonts - Because its cool-->
-    <link rel="preconnect" href="https://fonts.gstatic.com">
-    </link>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@900&display=swap">
     </link>
 
     <!-- W3.CSS - becuase im bad at websites :D -->
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 
-    <!-- Font Awsome, becuase (thats it, there should be no needed reasoning for Font Awsome) -->
+    <!-- Font Awsome - becuase (thats it, there should be no needed reasoning for Font Awsome) -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
-    <!-- CodeMirror - it just works -->
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.52.2/codemirror.min.js">
-    </script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.52.2/codemirror.min.css">
-    </link>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.52.2/theme/material.css">
-    </link>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.52.2/theme/material-darker.css">
-    </link>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.52.2/theme/material-palenight.css">
-    </link>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.52.2/theme/material-ocean.css">
-    </link>
-    </script>
-    <script type="text/javascript"
-        src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.52.2/mode/python/python.min.js">
-    </script>
+    <!-- jQuery - Because im lazy -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
-    <!-- highlighjs - this is getting to become tooooo much...-->
-    <link rel="stylesheet"
-        href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/default.min.css">
-    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
-    <script>hljs.initHighlightingOnLoad();</script>
+    <script>
+        function onunload() {
+            var code = document.getElementById("CodeArea").value;
+            //localStorage["user"] = user ;
+            localStorage.setItem("VexVR_Compile_Code", code);
+            return ""
+        }
 
+        function onload() {
+            $('.CodeArea').css('height', $(window).height() + 'px');
+
+            if (storageAvailable("VexVR_Compile_Code")) {
+                var code = localStorage["VexVR_Compile_Code"];
+                document.getElementById("CodeArea").value = code;
+            } else {
+                console.log("user no found in localStorage")
+            }
+        }
+
+        function storageAvailable(type) {
+            var storage;
+            try {
+                storage = window[type];
+                var x = '__storage_test__';
+                storage.setItem(x, x);
+                storage.removeItem(x);
+                return true;
+            } catch (e) {
+                return e instanceof DOMException && (
+                        // everything except Firefox
+                        e.code === 22 ||
+                        // Firefox
+                        e.code === 1014 ||
+                        // test name field too, because code might not be present
+                        // everything except Firefox
+                        e.name === 'QuotaExceededError' ||
+                        // Firefox
+                        e.name === 'NS_ERROR_DOM_QUOTA_REACHED') &&
+                    // acknowledge QuotaExceededError only if there's something already stored
+                    (storage && storage.length !== 0);
+            }
+        }
+
+        function w3_Accordion(id) {
+            var x = document.getElementById(id);
+            if (x.className.indexOf("w3-show") == -1) {
+                x.className += " w3-show";
+            } else {
+                x.className = x.className.replace(" w3-show", "");
+            }
+        }
+
+    </script>
 
     <style>
         .Orbitron {
             font-family: "Orbitron", sans-serif;
         }
 
-        .w3-bar-block .w3-bar-item {
-            padding: 16px;
-            font-weight: bold;
+        .oragnish {
+            background-color: #f6832f;
         }
 
-        .oragnish {
-            background-color: #b6862d;
+        .lang-python {
+            margin: 5px;
+            border-radius: 10px;
+            border-color: #f6832f;
         }
     </style>
 </head>
 
-<body>
+<body onbeforeunload="return onunload()" onload="onload()" onresize="onload()">
 
-    <nav class="w3-sidebar w3-bar-block w3-collapse w3-animate-left w3-card Orbitron" style="z-index:3;width:250px;"
-        id="mySidebar">
-        <a class="w3-bar-item w3-button w3-border-bottom w3-large Orbitron oragnish" href="#">VexVR-Compiler</a>
+    <!-- Side Navbar-->
+    <nav class="w3-sidebar w3-bar-block w3-collapse w3-animate-left w3-card Orbitron" style="width:15%;" id="sidebar">
+        <a class="w3-bar-item w3-button w3-border-bottom w3-large Orbitron oragnish">VEXCODE VR<br>Compiler</a>
         <a class="w3-bar-item w3-button w3-hide-large w3-large" href="javascript:void(0)" onclick="w3_close()">Close <i
                 class="fa fa-remove"></i></a>
+
+        <!-- Reference -->
         <div>
-            <a class="w3-bar-item w3-button" onclick="myAccordion('Reference')">Reference <i
+            <a class="w3-bar-item w3-button" onclick="w3_Accordion('Reference')">Reference <i
                     class="fa fa-caret-down"></i></a>
             <div id="Reference" class="w3-hide">
-                <a class="w3-bar-item w3-button" onclick="myAccordion('Ref_pen')">Pen <i
-                    class="fa fa-caret-down"></i></a>
+                <a class="w3-bar-item w3-button indent" onclick="w3_Accordion('Ref_pen')"> Pen <i
+                        class="fa fa-caret-down"></i></a>
                 <div id="Ref_pen" class="w3-hide">
-                    <p>
-                        <pre><code id="Python">Pen("Position", "Color")<br>#Changes the pen position, and or color at the same time</code></pre>
-=                            or
-                        <code>
-                            Pen.Move("Position")
-                            Pen.M("Position")
-                            #Changes the pen position
-                        </code>
-                            or
-
-                            Pen.Color("Color")
-                            Pen.C("Color")
-                            #Changes the pen color
-                        </code>
-                    </p>
+                    <div class="w3-panel w3-card w3-light-grey">
+                        <h3>Example</h3>
+                        <div class='lang-python w3-code w3-container'><code>Pen("Position", "Color")</code></div>
+                        <br>or<br>
+                        <div class='lang-python w3-code w3-container'>
+                            <code>Pen.Move("Position")<br>Pen.M("Position")</code>
+                        </div>
+                        <br>or<br>
+                        <div class='lang-python w3-code w3-container'><code>Pen.Color("Color")<br>Pen.C("Color")</code>
+                        </div>
+                    </div>
                 </div>
-
             </div>
         </div>
+
+        <!-- Themes -->
         <div>
-            <a class="w3-bar-item w3-button" onclick="myAccordion('themeSelect')" href="javascript:void(0)">Theme <i
+            <a class="w3-bar-item w3-button" onclick="w3_Accordion('themeSelect')">Theme <i
                     class="fa fa-caret-down"></i></a>
-            <div id="themeSelect" class="w3-hide">
-                <a class="w3-bar-item w3-button" href="#default" onclick="selectTheme('default')">&Tab;default</a>
-                <a class="w3-bar-item w3-button" href="#material" onclick="selectTheme('material')">&Tab;material</a>
-                <a class="w3-bar-item w3-button" href="#material-darker" onclick="selectTheme('material-darker')">&Tab;material-darker</a>
-                <a class="w3-bar-item w3-button" href="#material-palenight" onclick="selectTheme('material-palenight')">&Tab;material-palenight</a>
-                <a class="w3-bar-item w3-button" href="#material-ocean" onclick="selectTheme('material-ocean')">&Tab;material-ocean</a>
+            <div id="themeSelect" class="w3-hide w3-panel w3-card w3-light-grey">
+                <a class="w3-bar-item w3-button" href="#default"            >default</a>
+                <a class="w3-bar-item w3-button" href="#material"           >material</a>
+                <a class="w3-bar-item w3-button" href="#material-darker"    >material-darker</a>
+                <a class="w3-bar-item w3-button" href="#material-palenight" >material-palenight</a>
+                <a class="w3-bar-item w3-button" href="#material-ocean""    >material-ocean</a>
             </div>
         </div>
     </nav>
 
-
     <div class="w3-overlay w3-hide-large w3-animate-opacity" onclick="w3_close()" style="cursor:pointer" id="myOverlay">
     </div>
 
-    <div class="w3-main" style="margin-left:250px;">
-
-        <form><textarea id="code" name="code"></textarea></form>
-        <script>
-            var textArea = document.getElementById('code');
-            var editor = CodeMirror.fromTextArea(textArea, {
-                lineNumbers: true,
-                styleActiveLine: true,
-                matchBrackets: true,
-                tabSize: 4,
-                mode: 'python',
-            });
-            editor.setSize("100%", "100%");
-
-            function selectTheme(theme) {
-                editor.setOption("theme", theme);
-                location.hash = "#" + theme;
-                var background = $(textArea).css('background-color')
-                $('codeContainer').css('background-color', background)
-            }
-            var choice = (location.hash && location.hash.slice(1)) ||
-                (document.location.search &&
-                    decodeURIComponent(document.location.search.slice(1)));
-            if (choice) {
-                editor.setOption("theme", choice);
-            }
-            CodeMirror.on(window, "hashchange", function () {
-                var theme = location.hash.slice(1);
-                if (theme) {
-                    selectTheme(theme);
-                }
-            });
-        </script>
-    </div>
-    </div>
-
-    <script>
-        // Open and close the sidebar on medium and small screens
-        function w3_open() {
-            document.getElementById("mySidebar").style.display = "block";
-            document.getElementById("myOverlay").style.display = "block";
-        }
-
-        function w3_close() {
-            document.getElementById("mySidebar").style.display = "none";
-            document.getElementById("myOverlay").style.display = "none";
-        }
-
-        // Change style of top container on scroll
-        window.onscroll = function () {
-            myFunction()
-        };
-
-        function myFunction() {
-            if (document.body.scrollTop > 80 || document.documentElement.scrollTop > 80) {
-                document.getElementById("myTop").classList.add("w3-card-4", "w3-animate-opacity");
-                document.getElementById("myIntro").classList.add("w3-show-inline-block");
-            } else {
-                document.getElementById("myIntro").classList.remove("w3-show-inline-block");
-                document.getElementById("myTop").classList.remove("w3-card-4", "w3-animate-opacity");
-            }
-        }
-
-        // Accordions
-        function myAccordion(id) {
-            var x = document.getElementById(id);
-            if (x.className.indexOf("w3-show") == -1) {
-                x.className += " w3-show";
-                x.previousElementSibling.className += " w3-theme";
-            } else {
-                x.className = x.className.replace("w3-show", "");
-                x.previousElementSibling.className =
-                    x.previousElementSibling.className.replace(" w3-theme", "");
-            }
-        }
-    </script>
+    <section class="w3-main" style="width:100%;margin-left:15%;">
+        <iframe class="CodeArea" id="CodeArea" src="codeArea.html" crossorigin="use-credentials"
+            style="width:100%;border:1px solid #ddd; margin:0px;"></iframe>
+    </section>
 
 </body>
 
