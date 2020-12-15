@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
     <title>VexVR-Compiler</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
+    <meta charset="ISO-8859-1">
 
     <!-- Google Fonts - Because its cool-->
     <link rel="preconnect" href="https://fonts.gstatic.com">
@@ -36,6 +36,12 @@
         src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.52.2/mode/python/python.min.js">
     </script>
 
+    <!-- highlighjs - this is getting to become tooooo much...-->
+    <link rel="stylesheet"
+        href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/default.min.css">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+
 
     <style>
         .Orbitron {
@@ -57,27 +63,44 @@
 
     <nav class="w3-sidebar w3-bar-block w3-collapse w3-animate-left w3-card Orbitron" style="z-index:3;width:250px;"
         id="mySidebar">
-        <a class="w3-bar-item w3-button w3-border-bottom w3-large Orbitron" href="#">VexVR-Compiler</a>
+        <a class="w3-bar-item w3-button w3-border-bottom w3-large Orbitron oragnish" href="#">VexVR-Compiler</a>
         <a class="w3-bar-item w3-button w3-hide-large w3-large" href="javascript:void(0)" onclick="w3_close()">Close <i
                 class="fa fa-remove"></i></a>
-        <a class="w3-bar-item w3-button oragnish" href="#">Home</a>
-        <a class="w3-bar-item w3-button" href="#">Link 1</a>
-        <a class="w3-bar-item w3-button" href="#">Link 2</a>
-        <a class="w3-bar-item w3-button" href="#">Link 3</a>
-        <a class="w3-bar-item w3-button" href="#">Link 4</a>
-        <a class="w3-bar-item w3-button" href="#">Link 5</a>
         <div>
-            <a class="w3-bar-item w3-button" onclick="myAccordion('themeSelect')" href="javascript:void(0)">Theme<i
+            <a class="w3-bar-item w3-button" onclick="myAccordion('Reference')">Reference <i
+                    class="fa fa-caret-down"></i></a>
+            <div id="Reference" class="w3-hide">
+                <a class="w3-bar-item w3-button" onclick="myAccordion('Ref_pen')">Pen <i
+                    class="fa fa-caret-down"></i></a>
+                <div id="Ref_pen" class="w3-hide">
+                    <p>
+                        <pre><code id="Python">Pen("Position", "Color")<br>#Changes the pen position, and or color at the same time</code></pre>
+=                            or
+                        <code>
+                            Pen.Move("Position")
+                            Pen.M("Position")
+                            #Changes the pen position
+                        </code>
+                            or
+
+                            Pen.Color("Color")
+                            Pen.C("Color")
+                            #Changes the pen color
+                        </code>
+                    </p>
+                </div>
+
+            </div>
+        </div>
+        <div>
+            <a class="w3-bar-item w3-button" onclick="myAccordion('themeSelect')" href="javascript:void(0)">Theme <i
                     class="fa fa-caret-down"></i></a>
             <div id="themeSelect" class="w3-hide">
-                <a class="w3-bar-item w3-button" href="#default" onclick="selectTheme(" default")">&Tab;default</a>
-                <a class="w3-bar-item w3-button" href="#material" onclick="selectTheme(" material")">&Tab;material</a>
-                <a class="w3-bar-item w3-button" href="#material-darker" onclick="selectTheme("
-                    material-darker")">&Tab;material-darker</a>
-                <a class="w3-bar-item w3-button" href="#material-palenight" onclick="selectTheme("
-                    material-palenight")">&Tab;material-palenight</a>
-                <a class="w3-bar-item w3-button" href="#material-ocean" onclick="selectTheme("
-                    material-ocean")">&Tab;material-ocean</a>
+                <a class="w3-bar-item w3-button" href="#default" onclick="selectTheme('default')">&Tab;default</a>
+                <a class="w3-bar-item w3-button" href="#material" onclick="selectTheme('material')">&Tab;material</a>
+                <a class="w3-bar-item w3-button" href="#material-darker" onclick="selectTheme('material-darker')">&Tab;material-darker</a>
+                <a class="w3-bar-item w3-button" href="#material-palenight" onclick="selectTheme('material-palenight')">&Tab;material-palenight</a>
+                <a class="w3-bar-item w3-button" href="#material-ocean" onclick="selectTheme('material-ocean')">&Tab;material-ocean</a>
             </div>
         </div>
     </nav>
@@ -87,10 +110,6 @@
     </div>
 
     <div class="w3-main" style="margin-left:250px;">
-
-        <header class="w3-container oragnish" style="padding:64px 32px">
-            <h1 class="w3-xxxlarge Orbitron">VexVR-Compiler</h1>
-        </header>
 
         <form><textarea id="code" name="code"></textarea></form>
         <script>
@@ -124,11 +143,6 @@
             });
         </script>
     </div>
-
-    <footer class="w3-container oragnish Orbitron" style="padding:32px; margin-left:250px;">
-        <p>Footer information goes here</p>
-    </footer>
-
     </div>
 
     <script>
