@@ -16,17 +16,20 @@ We are still developing this, and it will not be finished for a while, but we ev
 * Syntax: 
 
     ```python
-    Pen.Pen("Position", "Color")  #Changes the pen position, and or color at the same time
+    Pen("Position", "Color")
+    #Changes the pen position, and or color at the same time
     ```
     or 
     ```python
-    Pen.Move("Position")        #Changes the pen position
+    Pen.Move("Position")
     Pen.M("Position")
+    #Changes the pen position
     ```
     or
     ```python
-    Pen.Color("Color")          #Changes the pen color
-    Pen.C("Color")    
+    Pen.Color("Color")
+    Pen.C("Color")
+    #Changes the pen color
     ```
 
     * Both Position and color will be turned into the correct unit, so don't worry about capitalization!
@@ -40,22 +43,28 @@ We are still developing this, and it will not be finished for a while, but we ev
 * Syntax: 
 
     ```python
-    Brain.P("Message")    #prints in the brain console
+    Brain.Print("Message")
+    Brain.P("Message")
+    #prints in the brain console
     ```
     or
     ```python
-    Brain.Color("Color")  #Sets print color in the brain console
+    Brain.Color("Color")
     Brain.C("Color")
+    #Sets print color in the brain console
     ```
     or
     ```python
-    Brain.Newline()       #makes a new line in the brain console, 
-    Brain.Nl()            #although its easier to just have the message end in "\n"
+    Brain.Newline()
+    Brain.Nl()
+    #makes a new line in the brain console,
+    #although its easier to just have the message end in "\n"
     ```
     or
     ```python
     Brain.Clear()         #clears the Brain console.
     Brain.Cl()
+    #Clears the Brain Terminal
     ```
     
     * the Color **DOES NOT** have to follow the VexVR color convention, the program will correct the casing of the colors.
@@ -71,18 +80,21 @@ We are still developing this, and it will not be finished for a while, but we ev
   * Syntax: 
 
     ```python
-    Drivetrain.Driving_Speed(Driving_Speed)  
-    Drivetrain.DS(Driving_Speed)  
+    Driving_Speed(Driving_Speed)  
+    DS(Driving_Speed)
+    #Sets Driving Speed
     ```
     or
     ```python
-    Drivetrain.Turning_Speed(Driving_Speed)  
-    Drivetrain.TS(Driving_Speed)  
+    Turning_Speed(Driving_Speed)  
+    TS(Driving_Speed)
+    #Sets Turning Speed
     ```
     or
     ```python
-    Drivetrain.Speed(Driving_Speed, Turning_Speed)  
-    Drivetrain.S(Driving_Speed, Turning_Speed)
+    Speed(Driving_Speed, Turning_Speed)  
+    S(Driving_Speed, Turning_Speed)
+    #Sets Driving Speed, and or Turning Speed
     ```
   
     * Both Speed values are intergers in the range 1-100
@@ -99,18 +111,20 @@ We are still developing this, and it will not be finished for a while, but we ev
   * Syntax: 
 
     ```python
-    Move.To([ [x,y] ])
+    Move([ [x,y] ])
+    #turns (if needed), Moves
     ```
     or
     ```python
-    Move.To([ [x,y], [x,y], ... ])
+    Move([ [x,y], [x,y], ... ])
+    #turns (if needed), Moves, repeats
     ```
 
     * Each entry in the array is a co-ordinate pair of x and y in an array
     * There can be **ANY NUMBER OF** co-ordinate pairs to travel to!
 
 
-  #### Object Move
+  #### Object_Move
   * Description:
     * Activates the ElectroMagnet, goes to position, stops if item is picked up before end coords
     * then it either...
@@ -121,40 +135,49 @@ We are still developing this, and it will not be finished for a while, but we ev
   * Syntax: 
 
     ```python
-    Move.Object([ [x,y] ])
-    Move.Obj([ [x,y] ])
+    Object_Move([ [x,y] ])
+    Obj([ [x,y] ])
+    #Start Magnet, Move
     ```
     or
     ```python
-    Move.Object([ [x,y], "return" ])
-    Move.Obj([ [x,y], "return" ])
+    Object_Move([ [x,y], return ])
+    Obj([ [x,y], return ])
+    #Start Magnet, Move, Return
     ```
     or
     ```python
-    Move.Object([ [x,y], [x,y] ])
-    Move.Obj([ [x,y], [x,y] ])
+    Object_Move([ [x,y], [x,y] ])
+    Obj([ [x,y], [x,y] ])
+    #Start Magnet, Move, Move
     ```
  
     * Each entry in the array is a co-ordinate pair of x and y in an array
     * There can be **ANY NUMBER OF** co-ordinate pairs to travel to!
 
 
-  #### Drop Move
+  #### Drop_Move
   * Description:
-    * Moves, drops.
+    * Moves, Released Magnet
 
   * Syntax: 
 
     ```python
-    Move.Drop([ [x,y] ])
+    Drop_Move([ [x,y] ])
+    Drop([ [x,y] ])
+    #Move, Drop
     ```
     or
     ```python
-    Move.Drop([ [x,y], "return" ])
+    Drop_Move([ [x,y], return ])
+    Drop([ [x,y], return ])
+    #Move, Drop, Return
     ```
     or
     ```python
-    Move.Drop([ [x,y], [x,y] ])
+    Drop_Move([ [x,y], [x,y] ])
+    Drop([ [x,y], [x,y] ])
+    #Move, Drop, Move
     ```
 
     * The first coordinate is where it moves to, then it Realeases the EletroMagnet.
