@@ -4,10 +4,10 @@
 <head>
     <title>VexVR-Compiler</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" href="Assets/Icon.png">
 
     <!-- Google Fonts - Because its cool-->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@900&display=swap">
-    </link>
 
     <!-- W3.CSS - becuase im bad at websites :D -->
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
@@ -18,47 +18,11 @@
     <!-- jQuery - Because im lazy -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
+    <!-- Local Storage Attempt -->
     <script>
-        function onunload() {
-            var code = document.getElementById("CodeArea").value;
-            //localStorage["user"] = user ;
-            localStorage.setItem("VexVR_Compile_Code", code);
-            return ""
-        }
-
         function onload() {
-            $('.CodeArea').css('height', $(window).height() + 'px');
-
-            if (storageAvailable("VexVR_Compile_Code")) {
-                var code = localStorage["VexVR_Compile_Code"];
-                document.getElementById("CodeArea").value = code;
-            } else {
-                console.log("user no found in localStorage")
-            }
-        }
-
-        function storageAvailable(type) {
-            var storage;
-            try {
-                storage = window[type];
-                var x = '__storage_test__';
-                storage.setItem(x, x);
-                storage.removeItem(x);
-                return true;
-            } catch (e) {
-                return e instanceof DOMException && (
-                        // everything except Firefox
-                        e.code === 22 ||
-                        // Firefox
-                        e.code === 1014 ||
-                        // test name field too, because code might not be present
-                        // everything except Firefox
-                        e.name === 'QuotaExceededError' ||
-                        // Firefox
-                        e.name === 'NS_ERROR_DOM_QUOTA_REACHED') &&
-                    // acknowledge QuotaExceededError only if there's something already stored
-                    (storage && storage.length !== 0);
-            }
+            $('#CodeAreaContainer').css('height', $(window).height() + 'px');
+            $('#CodeArea').css('height', $(window).height() + 'px');
         }
 
         function w3_Accordion(id) {
@@ -69,7 +33,6 @@
                 x.className = x.className.replace(" w3-show", "");
             }
         }
-
     </script>
 
     <style>
@@ -86,12 +49,23 @@
             border-radius: 10px;
             border-color: #f6832f;
         }
+
+        body::-webkit-scrollbar {
+            display: none;
+        }
+
+        body {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+            overflow: hidden;
+        }
     </style>
 </head>
 
-<body onbeforeunload="return onunload()" onload="onload()" onresize="onload()">
+<body onbeforeunload="onunload()" onload="onload()" onresize="onload()" style="overflow: hidden;">
 
-    <!-- Side Navbar-->
+
+    <!-- Side Navbar -> reference -->
     <nav class="w3-sidebar w3-bar-block w3-collapse w3-animate-left w3-card Orbitron" style="width:15%;" id="sidebar">
         <a class="w3-bar-item w3-button w3-border-bottom w3-large Orbitron oragnish">VEXCODE VR<br>Compiler</a>
         <a class="w3-bar-item w3-button w3-hide-large w3-large" href="javascript:void(0)" onclick="w3_close()">Close <i
@@ -104,42 +78,33 @@
             <div id="Reference" class="w3-hide">
                 <a class="w3-bar-item w3-button indent" onclick="w3_Accordion('Ref_pen')"> Pen <i
                         class="fa fa-caret-down"></i></a>
-                <div id="Ref_pen" class="w3-hide">
-                    <div class="w3-panel w3-card w3-light-grey">
-                        <h3>Example</h3>
-                        <div class='lang-python w3-code w3-container'><code>Pen("Position", "Color")</code></div>
-                        <br>or<br>
-                        <div class='lang-python w3-code w3-container'>
-                            <code>Pen.Move("Position")<br>Pen.M("Position")</code>
-                        </div>
-                        <br>or<br>
-                        <div class='lang-python w3-code w3-container'><code>Pen.Color("Color")<br>Pen.C("Color")</code>
-                        </div>
+                <div id="Ref_pen" class="w3-hide w3-panel w3-card w3-light-gray">
+                    <h3>Example</h3>
+                    <div class='lang-python w3-code w3-container'><code>Pen("Position", "Color")</code></div>
+                    <br>or<br>
+                    <div class='lang-python w3-code w3-container'>
+                        <code>Pen.Move("Position")<br>Pen.M("Position")</code>
+                    </div>
+                    <br>or<br>
+                    <div class='lang-python w3-code w3-container'><code>Pen.Color("Color")<br>Pen.C("Color")</code>
                     </div>
                 </div>
             </div>
         </div>
-
-        <!-- Themes -->
-        <div>
-            <a class="w3-bar-item w3-button" onclick="w3_Accordion('themeSelect')">Theme <i
-                    class="fa fa-caret-down"></i></a>
-            <div id="themeSelect" class="w3-hide w3-panel w3-card w3-light-grey">
-                <a class="w3-bar-item w3-button" href="#default"            >default</a>
-                <a class="w3-bar-item w3-button" href="#material"           >material</a>
-                <a class="w3-bar-item w3-button" href="#material-darker"    >material-darker</a>
-                <a class="w3-bar-item w3-button" href="#material-palenight" >material-palenight</a>
-                <a class="w3-bar-item w3-button" href="#material-ocean""    >material-ocean</a>
+    </nav>
+    <!-- Top Navbar -> Generic-->
+    <nav class="w3-top" style="z-index:10;margin-left:15%;">
+        <div class="w3-bar">
+            <div class=" w3-overlay w3-animate-opacity" onclick="w3_close()" style="cursor:pointer" id="myOverlay">
+                <i class="fas fa-bars"></i>
             </div>
+        </div>
         </div>
     </nav>
 
-    <div class="w3-overlay w3-hide-large w3-animate-opacity" onclick="w3_close()" style="cursor:pointer" id="myOverlay">
-    </div>
-
-    <section class="w3-main" style="width:100%;margin-left:15%;">
-        <iframe class="CodeArea" id="CodeArea" src="codeArea.html" crossorigin="use-credentials"
-            style="width:100%;border:1px solid #ddd; margin:0px;"></iframe>
+    <section class="w3-main" id="CodeAreaContainer" style="width:100%;margin-left:15%;overflow:hidden;">
+        <iframe class="CodeArea" id="CodeArea" src="codeArea.html" name='{"mode":"python"}'
+            style="width:100%;margin:0px;overflow:hidden;"></iframe>
     </section>
 
 </body>

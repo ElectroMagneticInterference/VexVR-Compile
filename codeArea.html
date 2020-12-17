@@ -7,53 +7,102 @@
     </script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.52.2/codemirror.min.css">
     </link>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.52.2/theme/material.css">
-    </link>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.52.2/theme/material-darker.css">
-    </link>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.52.2/theme/material-palenight.css">
-    </link>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.52.2/theme/material-ocean.css">
-    </link>
-    <script type="text/javascript"
-        src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.52.2/mode/python/python.min.js">
-    </script>
+    <!-- Changeable theme stylesheet and lang-->
+    <link rel="stylesheet" id="ThemeLink">
+    <script type="text/javascript" id="LangLink"></script>
+
+    <!-- Google Fonts -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@900&display=swap">
+
+    <style>
+        select {
+            appearance: none;
+            background-color: transparent;
+            padding: 0 1em 0 0;
+            outline: none;
+            border: none;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1em;
+        }
+    </style>
 </head>
 
-<body style="margin:0; overflow:auto">
+<body style="margin:0; overflow:auto;">
+    <nav
+        style="position:fixed;bottom:0;z-index:10;font-family:'Orbitron', sans-serif;background-color:#f6832f;padding:.5em;">
+        <label for="ThemeSelect">Themes:</label>
+        <select id="ThemeSelect" onchange="selectTheme(this.value);">
+            <option value="default">default
+            <option value="material">material
+            <option value="material-darker">material-darker
+            <option value="material-palenight">material-palenight
+            <option value="material-ocean">material-ocean
+        </select>
+    </nav>
+
     <form><textarea id="codeArea"></textarea></form>
     <script>
+        const langs = ['APL', 'ASN.1', 'Asterisk dialplan', 'Brainfuck', 'C, C++, C#', 'Ceylon', 'Clojure',
+            'Closure Stylesheets', 'CMake', 'COBOL', 'CoffeeScript', 'Common Lisp', 'Crystal', 'CSS', 'Cypher',
+            'Cython', 'D', 'Dart', 'Django', 'Dockerfile', 'diff', 'DTD', 'Dylan', 'EBNF', 'ECL', 'Eiffel',
+            'Elixir', 'Elm', 'Erlang', 'Factor', 'FCL', 'Forth', 'Fortran', 'F#', 'Gas', 'Gherkin', 'Go', 'Groovy',
+            'HAML', 'Handlebars', 'Haskell', 'Haxe', 'HTML embedded', 'HTML mixed-mode', 'HTTP', 'IDL', 'Java',
+            'JavaScript', 'Jinja2', 'Julia', 'Kotlin', 'LESS', 'LiveScript', 'Lua', 'Markdown', 'Mathematica',
+            'mbox', 'mIRC', 'Modelica', 'MscGen', 'MUMPS', 'Nginx', 'NSIS', 'N-Triples/N-Quads', 'Objective C',
+            'OCaml', 'Octave', 'Oz', 'Pascal', 'PEG.js', 'Perl', 'PGP', 'PHP', 'Pig Latin', 'PowerShell',
+            'Properties files', 'ProtoBuf', 'Pug', 'Puppet', 'python', 'Q', 'R', 'RPM', 'reStructuredText', 'Ruby',
+            'Rust', 'SAS', 'Sass', 'Spreadsheet', 'Scala', 'Scheme', 'SCSS', 'Shell', 'Sieve', 'Slim', 'Smalltalk',
+            'Smarty', 'Solr', 'Soy', 'Stylus', 'SQL', 'SPARQL', 'Squirrel', 'Swift', 'sTeX, LaTeX', 'Tcl',
+            'Textile', 'Tiddlywiki', 'Tiki wiki', 'TOML', 'Tornado', 'troff', 'TTCN', 'TTCN Configuration',
+            'Turtle', 'Twig', 'VB.NET', 'VBScript', 'Velocity', 'Verilog', 'SystemVerilog', 'VHDL', 'Vue.js app',
+            'Web IDL', 'WebAssembly Text Format', 'XML', 'HTML', 'XQuery', 'Yacas', 'YAML', 'YAML frontmatter',
+            'Z80'
+        ];
+        var editor, mode;
         var textArea = document.getElementById('codeArea');
         textArea.innerHTML =
-            '\#-------VEXCODE VR - Compiler\n\#\n\#\tWelcome to VEXCODE VR - Compiler!\n\#\n\#\n\#\n\#\n\#\n\#-------\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n'
-        var editor = CodeMirror.fromTextArea(textArea, {
-            lineNumbers: true,
-            styleActiveLine: true,
-            matchBrackets: true,
-            tabSize: 4,
-            mode: 'python',
-        });
-        editor.setSize("100%", "100%");
+            "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n";
+        var info = window.name
+        info = JSON.parse(info);
 
         function selectTheme(theme) {
+            document.getElementById('ThemeLink').href =
+                "https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.52.2/theme/" + theme + ".min.css";
             editor.setOption("theme", theme);
-            //document.getElementsByClassName('w3-code').style.backgroundColor = document.getElementById('CodeMirror').style.backgroundColor
-        }
-        var choice = (window.parent.location.hash && window.parent.location.hash.slice(1)) ||
-            (window.parent.location.search &&
-                decodeURIComponent(window.parent.location.search.slice(1)));
-        if (choice) {
-            editor.setOption("theme", choice);
-        }
-        CodeMirror.on(window.parent, "hashchange", function () {
-            var theme = window.parent.location.hash.slice(1);
-            if (theme) {
-                selectTheme(theme);
+            if (typeof (Storage) !== "undefined") {
+                localStorage["theme"] = theme;
             }
+        }
+
+        function onload() {
+            if (localStorage["theme"]) {
+                selectTheme(localStorage["theme"]);
+                document.getElementById('ThemeSelect').value = localStorage["theme"];
+            }
+        }
+
+        if (info.mode) {
+            mode = info.mode
+            for (var i = 0; i < langs.length; i++) {
+                if (mode.includes(langs[i])) {
+                    mode = langs[i];
+                    document.getElementById('LangLink').src =
+                        "https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.52.2/mode/" + mode + "/" + mode +
+                        ".min.js";
+                    document.getElementById('LangLink').addEventListener('load', function () {
+                        onload();
+                    });
+                }
+            }
+        }
+
+        editor = CodeMirror.fromTextArea(textArea, {
+            lineNumbers:true,
+            mode: mode,
         });
-
-
+        editor.setSize("100%", "100%");
     </script>
 </body>
+
 
 </html>
