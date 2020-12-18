@@ -14,24 +14,14 @@
     <!-- Google Fonts -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@900&display=swap">
 
-    <style>
-        select {
-            appearance: none;
-            background-color: transparent;
-            padding: 0 1em 0 0;
-            outline: none;
-            border: none;
-            font-family: 'Orbitron', sans-serif;
-            font-size: 1em;
-        }
-    </style>
 </head>
 
 <body style="margin:0; overflow:auto;">
     <nav
-        style="position:fixed;bottom:0;z-index:10;font-family:'Orbitron', sans-serif;background-color:#f6832f;padding:.5em;">
+        style="position:fixed;bottom:0;z-index:10;font-family:'Orbitron', sans-serif;background-color:#f6832f;padding:.5em">
         <label for="ThemeSelect">Themes:</label>
-        <select id="ThemeSelect" onchange="selectTheme(this.value);">
+        <select id="ThemeSelect" onchange="selectTheme(this.value);"
+            style="appearance:none;background-color:gray;padding:.5em .5em .5em .5em;outline:0;font-family:Orbitron,sans-serif;font-size:1em;border-radius:10px">
             <option value="default">default
             <option value="material">material
             <option value="material-darker">material-darker
@@ -60,47 +50,52 @@
         ];
         var editor, mode;
         var textArea = document.getElementById('codeArea');
-        textArea.innerHTML =
-            "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n";
-        var info = window.name
+        var info = window.name;
         info = JSON.parse(info);
 
         function selectTheme(theme) {
             document.getElementById('ThemeLink').href =
                 "https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.52.2/theme/" + theme + ".min.css";
             editor.setOption("theme", theme);
+            window.parent.document.getElementById('body').classList.replace(/.*/, theme);
             if (typeof (Storage) !== "undefined") {
                 localStorage["theme"] = theme;
             }
         }
 
-        function onload() {
+        window.onload = function () {
             if (localStorage["theme"]) {
                 selectTheme(localStorage["theme"]);
                 document.getElementById('ThemeSelect').value = localStorage["theme"];
             }
-        }
-
-        if (info.mode) {
-            mode = info.mode
-            for (var i = 0; i < langs.length; i++) {
-                if (mode.includes(langs[i])) {
-                    mode = langs[i];
-                    document.getElementById('LangLink').src =
-                        "https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.52.2/mode/" + mode + "/" + mode +
-                        ".min.js";
-                    document.getElementById('LangLink').addEventListener('load', function () {
-                        onload();
-                    });
-                }
+            if (localStorage["TextAreaContent"]) {
+                editor.setValue(localStorage["TextAreaContent"]);
+            } else {
+                editor.setValue(
+                    "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
+                )
             }
         }
 
-        editor = CodeMirror.fromTextArea(textArea, {
-            lineNumbers:true,
-            mode: mode,
-        });
+        for (var i = 0; i < langs.length; i++) {
+            if (info.mode.includes(langs[i])) {
+                document.getElementById('LangLink').src =
+                    "https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.52.2/mode/" + info.mode + "/" + info.mode +
+                    ".min.js";
+                console.log(document.getElementById('LangLink'))
+                document.getElementById('LangLink').onload = function () {
+                    onload();
+                };
+            }
+        }
+
+
+        editor = CodeMirror.fromTextArea(textArea, info);
         editor.setSize("100%", "100%");
+
+        window.onbeforeunload = function () {
+            localStorage.setItem('TextAreaContent', editor.getValue());
+        }
     </script>
 </body>
 

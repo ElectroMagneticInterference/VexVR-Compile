@@ -4,7 +4,7 @@
 <head>
     <title>VexVR-Compiler</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="icon" href="Assets/Icon.png">
+    <link rel="icon" href="Assets/Icon.svg">
 
     <!-- Google Fonts - Because its cool-->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@900&display=swap">
@@ -20,49 +20,75 @@
 
     <!-- Local Storage Attempt -->
     <script>
-        function onload() {
+        window.onload = window.onresize = function () {
             $('#CodeAreaContainer').css('height', $(window).height() + 'px');
             $('#CodeArea').css('height', $(window).height() + 'px');
         }
 
         function w3_Accordion(id) {
-            var x = document.getElementById(id);
+            x = document.getElementById(id)
             if (x.className.indexOf("w3-show") == -1) {
                 x.className += " w3-show";
             } else {
                 x.className = x.className.replace(" w3-show", "");
             }
         }
+
+        function selectTheme(theme) {
+            alert(theme);
+        }
     </script>
 
     <style>
         .Orbitron {
-            font-family: "Orbitron", sans-serif;
+            font-family: Orbitron, sans-serif
         }
 
         .oragnish {
             background-color: #f6832f;
+            color: black
         }
 
         .lang-python {
             margin: 5px;
             border-radius: 10px;
-            border-color: #f6832f;
+            border-color: #f6832f
         }
 
         body::-webkit-scrollbar {
-            display: none;
+            display: none
         }
 
         body {
             -ms-overflow-style: none;
             scrollbar-width: none;
-            overflow: hidden;
+            overflow: hidden
         }
+
+        .material-ocean {
+            background-color: #0F111A;
+            color: #8F93A2;
+        }
+
+        .material-darker {
+            background-color: #212121;
+            color: #EEFFFF;
+        }
+
+        .material-palenight {
+            background-color: #292D3E;
+            color: #A6ACCD;
+        }
+
+        .material {
+            background-color: #263238;
+            color: #EEFFFF;
+        }
+
     </style>
 </head>
 
-<body onbeforeunload="onunload()" onload="onload()" onresize="onload()" style="overflow: hidden;">
+<body style="overflow: hidden;">
 
 
     <!-- Side Navbar -> reference -->
@@ -72,11 +98,10 @@
                 class="fa fa-remove"></i></a>
 
         <!-- Reference -->
-        <div>
-            <a class="w3-bar-item w3-button" onclick="w3_Accordion('Reference')">Reference <i
-                    class="fa fa-caret-down"></i></a>
+        <div >
+            <a class="w3-bar-item w3-button" onclick="w3_Accordion('Reference')">Reference <i class="fa fa-caret-down"></i></a>
             <div id="Reference" class="w3-hide">
-                <a class="w3-bar-item w3-button indent" onclick="w3_Accordion('Ref_pen')"> Pen <i
+                <a class="w3-bar-item w3-button indent" onclick="w3_Accordion('Ref_pen')">     Pen <i
                         class="fa fa-caret-down"></i></a>
                 <div id="Ref_pen" class="w3-hide w3-panel w3-card w3-light-gray">
                     <h3>Example</h3>
@@ -103,7 +128,7 @@
     </nav>
 
     <section class="w3-main" id="CodeAreaContainer" style="width:100%;margin-left:15%;overflow:hidden;">
-        <iframe class="CodeArea" id="CodeArea" src="codeArea.html" name='{"mode":"python"}'
+        <iframe class="CodeArea" id="CodeArea" src="codeArea.html" name='{"mode":"python", "lineNumbers": true}'
             style="width:100%;margin:0px;overflow:hidden;"></iframe>
     </section>
 
