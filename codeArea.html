@@ -57,6 +57,7 @@
             document.getElementById('ThemeLink').href =
                 "https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.52.2/theme/" + theme + ".min.css";
             editor.setOption("theme", theme);
+            console.log(window.parent.document.getElementById('body'))
             window.parent.document.getElementById('body').classList.replace(/.*/, theme);
             if (typeof (Storage) !== "undefined") {
                 localStorage["theme"] = theme;
