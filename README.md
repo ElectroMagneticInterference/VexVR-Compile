@@ -2,8 +2,10 @@
 ### A code framework for VexVR Python.
 ### You type the coords, and we do the rest.
 
-by the Orange Hersheys ![logo](Assets/Icon.png)
+![logo](Assets/Icon.png)
 
+by the Orange Hersheys
+ 
 ## Reference:
 
 **Leave comments of new Ideas to add to the framework, we really want the input!**
