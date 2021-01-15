@@ -2,7 +2,7 @@
 ### A code framework for VexVR Python.
 ### You type the coords, and we do the rest.
 
-by the Orange Hersheys ![logo](Assets/Icon.svg)
+by the Orange Hersheys ![logo](Assets/icon.png)
 
 ## Reference:
 
