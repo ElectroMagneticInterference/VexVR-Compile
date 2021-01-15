@@ -6,6 +6,8 @@
 
 by the Orange Hersheys
 
+These docs are also on our [website](http://vexvr.orangehersheys.dev/)
+
 ## Disclaimer:
 This project is just for fun, and getting into the door for further vex coding shenanigans.
 
@@ -25,7 +27,7 @@ We are also adding shortcuts, sensor detection, and the like to improve the effe
 - str::value: type :: what_it_is
 - Coord: [int::x, int::y]
 - *something: any amount of {something}
-- (thing1|thing2): accepts either value
+- (thing1\|thing2): accepts either value
 - something?: arg is optional
 
 #### e.move(*Coord)
@@ -51,7 +53,7 @@ We are also adding shortcuts, sensor detection, and the like to improve the effe
 - normal, but after first move, it goes to second.
 
 
-#### e.pen(*Color|Position)
+#### e.pen(*Color\|Position)
 - enter a Pen color or position, and it does that.
 - WARNING: this slows down the bot a lot!
 
