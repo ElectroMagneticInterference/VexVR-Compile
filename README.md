@@ -27,12 +27,18 @@ We are also adding shortcuts, sensor detection, and the like to improve the effe
         str::string
         float::float
         ```
-- Coord:
+- Coord =
     ```cs
     [int::x, int::y]
-    ````
-        
-        
+    ```
+- Colors = 
+    ```python
+    BLACK, BLUE, RED, or GREEN
+    ```
+- Positions = 
+    ```python
+    UP or DOWN
+    ```
 - `*something` = any amount of {something}
 - `(thing1\|thing2)` = accepts either value
 - `something?` = arg is optional
@@ -76,13 +82,11 @@ We are also adding shortcuts, sensor detection, and the like to improve the effe
 - options:
     - unit= `(INCH|MM)`:   changes the unit the program is in, default is MM
     - strict= boolean: If True, syncs after every move
-        - WARNING: slows down the bot, but improves accuracy.
+          - WARNING: slows down the bot, but improves accuracy.
 
 
 
 > ### don't sue us VEX, **please**
 > \- us
 
----
-## By the Orange Hersheys <img src="Assets/Icon.png" alt="logo" height="30"/>
 
