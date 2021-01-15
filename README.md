@@ -2,10 +2,6 @@
 ### A code framework for VexVR Python.
 ### You type the coords, and we do the rest.
 
-![logo](Assets/Icon.png)
-
-by the Orange Hersheys
-
 These docs are also on our [website](http://vexvr.orangehersheys.dev/)
 
 ## Disclaimer:
@@ -74,3 +70,6 @@ We are also adding shortcuts, sensor detection, and the like to improve the effe
 
 > ### don't sue us VEX, **please**
 > \- us
+
+<img src="Assets/Icon.png" alt="logo" width="200"/>
+by the Orange Hersheys
