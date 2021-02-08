@@ -61,7 +61,7 @@ The threads all interact in specific ways to ensure that the robot goes as fast 
 """
 
 # =+=+=+= Library Imports
-from .vexcode import *
+from vexcode import *
 import math
 
 # =+=+=+=
@@ -191,7 +191,10 @@ class _calc:
             location.position(Y, settings.unit),
         ]
         _current_angle = location.position_angle(DEGREES)
-        _log.append(message("Initated\n\n\n", GREEN))
+        _log.append(cMessage("Initated\n\n\n", GREEN))
+
+    def __init__(self):
+        self.init()
 
     """
     the 'hidden' function which the other functions use to move.
@@ -276,7 +279,7 @@ class _calc:
         while _calc_wait:
             wait(1, MSEC)
         if not settings.strict:
-            _log.append(message("Synced\n\n", GREEN))
+            _log.append(cMessage("Synced\n\n", GREEN))
         _nextPosCoord = [
             location.position(X, settings.unit),
             location.position(Y, settings.unit),
@@ -289,11 +292,23 @@ class _calc:
         if not settings.strict:
             self.__sync()
 
-    # this is unused in the preprocessor, but is required to not throw errors
+    # These are unused in the preprocessor, but is required to not throw errors
     def pen(*args):
         pass
 
     def print(*args):
+        pass
+
+    def heading(*args):
+        pass
+
+    def drive(*args):
+        pass
+
+    def turn(*args):
+        pass
+
+    def circle(*args):
         pass
 
 
@@ -333,7 +348,7 @@ class _move:
 
         # pops coords used, and send data to logs.
         try:
-            _log.append(message(coord.log))
+            _log.append(cMessage(coord.log))
         except:
             pass
         _coords.pop(0)
@@ -367,12 +382,24 @@ class _move:
         elif endpoint:
             self.__move()
 
+    async def polygon(
+        self, dir, lines: int, r: float, heading: float = 0, lineMax: int = None
+    ):
+        angle = 360 / lines
+        dist = math.sin(math.pi / lines) * r
+        self.heading(heading)
+        if not lineMax:
+            lineMax = lines
+        for i in range(lineMax):
+            self.turn(dir, angle)
+            self.drive(FORWARD, dist)
+
     # This is the action side of the sync() cosettings.unitand
     def __sync(self, *args1):
         global _calc_wait, _move_wait
         _calc_wait = False
         if not settings.strict:
-            _log.append(message("Syncing...\n", BLACK))
+            _log.append(cMessage("Syncing...\n", BLACK))
         while _move_wait:
             wait(1, MSEC)
         _move_wait = True
@@ -401,8 +428,35 @@ class _move:
             wait(1, MSEC)
 
     # print commands
-    def print(self, m, c=None):
-        _log.append(message(m, c, True))
+    def print(self, message: str, color=None):
+        _log.append(cMessage(message, color, True))
+
+    # basic movement commands
+    async def heading(self, heading: float = None):
+        if heading:
+            drivetrain.turn_to_heading(heading)
+        else:
+            return drivetrain.heading()
+
+    async def drive(self, direction, distance: float = None):
+        if not direction in [FORWARD, REVERSE]:
+            raise Exception(
+                f"{direction} is not a valid direction!\n use FORWARD or REVERSE"
+            )
+        if not distance:
+            drivetrain.drive(direction)
+        else:
+            drivetrain.drive_for(direction, distance)
+
+    async def turn(self, direction, angle: float = None):
+        if not direction in [LEFT, RIGHT]:
+            raise Exception(
+                f"{direction} is not a valid direction!\n use LEFT or RIGHT"
+            )
+        if angle:
+            drivetrain.turn_for(direction, angle)
+        else:
+            drivetrain.turn(direction)
 
 
 def _movement():
@@ -431,7 +485,7 @@ The _misc() thread waits for things to appear
 """
 
 
-class message:
+class cMessage:
     def __init__(self, message, color=None, user=False):
         self.message = message
         self.color = color

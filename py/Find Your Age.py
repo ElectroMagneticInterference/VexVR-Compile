@@ -9,7 +9,7 @@
 #       age" task using Universal Threading     #
 #                                               #
 #=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=#
-from .vexcode import *
+from vexcode import *
 
 def num(e,num,col=BLACK):
     num = str(num - 1)

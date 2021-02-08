@@ -7,7 +7,5 @@
     "Dynamic Wall Maze":"DynamicWallMaze",
     "Disk Mover":"DiskMover",
     "Disk Transport":"Magnet",
-    "Castle Crusher":"CastleCrasher",
-    "Dynamic Castle Crasher":"DynamicCastleCrasher",
-    "Coral Reef Cleanup":"CoralReefRescue"
+    "Castle Crusher":"CastleCrasher"
 }

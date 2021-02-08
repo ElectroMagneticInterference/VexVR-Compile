@@ -7,7 +7,7 @@
 #       A Universal Threading Usage for CCM     #
 #                                               #
 #=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=#
-from ..vexcode import *
+from vexcode import *
 
 async def green(e,target,target2="return"):
     e.pickup(target,target2)

@@ -1,153 +1,238 @@
-#*=+=+=+=+=+ Imports
-import json, os, re
-from pathlib import Path
+import os, re
+from json import load as __jsLoad__, dump as __jsSave__
+from time import sleep
 
-#*=+=+=+=+=+ Variables
-#* extentions Base
-addonf = "Universal Threading.py"
+w = "{}"
 
-#* VR Json Base
-vrJB = "vrpython.json"
-
-#* maps file
-mapsf = "maps.json"
+# =+=+=+=+=+=<
+#   ANSI color codes
 
 
-#*=+=+=+=+=+ Colors
-cReset = "\u001b[0m"
-cPrimary = "\u001b[32m"
-cSecondary = "\u001b[0;33m"
-cInput = "\u001b[36m"
-cException = "\u001b[31m"
+class c:
+    # Reset
+    r = "\u001b[0m"
+    # Primary
+    p = "\u001b[32m"
+    # Secondary
+    s = "\u001b[0;33m"
+    # Input
+    i = "\u001b[36m"
+    # Exception
+    e = "\u001b[31m"
 
 
-#*=+=+=+=+=+ Inital
-#* inital Function to run
-def init():
-    print("\n")
+# =+=+=+=+=+=>
 
-    #* Initalize Json
-    initJson()
-
-    #* Get file to compile
-    f, fn = enterFile()
-
-    #* Get contents from selected file
-    fc = extractContents(f)
-
-    #* Chose the map
-    idIndex = choseMap()
-
-    print(f"\n{cPrimary}selected {cInput}{maps[idIndex]}{cPrimary}\n")
-
-    fc["playground"] = maps[idIndex]
-
-    fout = f"{Path(__file__).parent}\\vrpython\\{fn}.vrpython"
-    if os.path.exists(fout):
-        os.remove(fout)
-
-    fout = open(fout,"wt")
-    fout.write(json.dumps(fc, sort_keys=True, indent=4))
-    fout.close()
-
-    #* Print when the program is done.
-    print(f"{cPrimary}Finished!\nFile {cInput}{fn}.py{cPrimary} has been compiled into {cSecondary}{fn}.vrpython{cPrimary}!{cReset}")
-
-    input("Press Any key to exit...")
-    endProgram()
+# =+=+=+=+=+=<
+#   File Functions
 
 
-#*=+=+=+=+=+ Initalize Map List
-mapids=[]
-maps=[]
-
-#*Make a list of maps
-mapsList = f"\n{cPrimary}Chose a Map!\n"
-
-def initJson():
-    global mapids, maps, mapsList
-    try:
-        mapsJson = openJson(mapsf)
-    except:
-        raise Exception(f"\n{cInput}{mapsf} {cException}\nDoes not exist!\n{cReset}")
-
-    i = 0
-    for k,v in mapsJson.items():
-        #*Add the map name with its index.
-        maps.append(k)
-        mapids.append(v)
-        mapsList += f"{cPrimary}{i}. {cSecondary}{k}\n"
-        i += 1
+class path:
+    json = os.path.abspath("./json") + "\\"
+    py = os.path.abspath("./py") + "\\"
+    vr = os.path.abspath("./vrpython") + "\\"
 
 
-#*=+=+=+=+=+ Enter File
-def enterFile():
-    fn = input(f"\n{cPrimary}Which file needs to be compiled?\n>>> {cInput}")
-
-    try:
-        f = open(f"{Path(__file__).parent}\\py\\{fn}.py", "rt")
-        print(f"\n{cPrimary}Compiling {cInput}{fn}.py{cPrimary}")
-
-    except KeyboardInterrupt:
-        endProgram()
-
-    except:
-        print(f"{cException}file {cInput}{fn}{cException} does not exist{cReset}")
-        f, fn = enterFile()
-
-    finally:
-        return f, fn
+def loadJson(fileName:str, path:str = path.json, extension:str = ".json") -> object:
+    f = open(f"{path}{fileName}{extension}")
+    json = __jsLoad__(f)
+    f.close()
+    return json
 
 
-#*=+=+=+=+=+ Extract Contents
-#* f => file
-#* fb => file base
-#* c => content
-#* l => line
-def extractContents(f):
-    fc = openJson(vrJB)
-    fb = open(Path(__file__).parent / "py" / addonf)
-
-    for l in f:
-        if not re.findall(r"vex_start", l):
-            fc["textContent"] += l.rstrip("\n") + "\n"
-
-    fc["textContent"] += "\n\n\n"
-
-    for l in fb:
-        fc["textContent"] += l.rstrip("\n") + "\n"
-    fc["textContent"] = re.sub(r"\.vexcode", "vexcode", fc["textContent"])
-
+def saveJson(path:os.PathLike,fileName:str,json:dict) -> None:
+    f = open(path + fileName, "wt")
+    __jsSave__(json,f)
     f.close()
 
-    return fc
+
+def getPythonFiles(l: list = []) -> list:
+    for f in os.listdir(path.py):
+        if f.endswith(".py") and f != "vexcode.py" and f != "Universal Threading.py":
+            l.append(os.path.splitext(f)[0])
+    return l
 
 
-#*=+=+=+=+=+ Enter Number
-def choseMap():
+def getVRPythonFiles(l: list = []) -> list:
+    for f in os.listdir(path.vr):
+        if f.endswith(".vrpython") and f != "Universal Threading.vrpython":
+            l.append(os.path.splitext(f)[0])
+    return l
+
+
+# =+=+=+=+=+=>
+
+# =+=+=+=+=+=<
+#   User Interaction
+
+
+def enter(startText: str, list: list, finalText: str = None) -> str:
+    rawInput = input(startText)
     try:
-        id = int(input(mapsList + f"\n{cPrimary}Enter the Number!\n>>> {cInput}"))
+        uInput = int(rawInput)
+        if uInput < 0:
+            raise IndexError()
+        string = list[uInput]
 
-    except KeyboardInterrupt:
-        endProgram()
+    except IndexError:
+        print(f"{c.i}{rawInput} {c.e}is not a Valid Slection!{c.p}\nChose Again...")
+        sleep(0.5)
+        return enter(startText, list, finalText)
 
-    except:
-        print(f"{cException}mNot a Valid Number!{cPrimary}")
-        id = choseMap()
+    except ValueError:
+        print(f"{c.i}{rawInput} {c.e}Not a Valid Number!{c.p}\nChose Again...")
+        sleep(0.5)
+        return enter(startText, list, finalText)
 
-    finally:
-        return id
-
-
-#*=+=+=+=+=+ Open Json files + load
-openJson = lambda f: json.loads(open(Path(__file__).parent / "json" / f).read())
+    if finalText:
+        print(finalText.format(string))
+    return string
 
 
-#*=+=+=+=+=+ End Program
+def enterFile(startText: str, List: list, finalText: str) -> str:
+    fileName = enter(startText + f"\n{c.p}Chose a file! \n>>> {c.i}", List, finalText)
+    if fileName == "All Files":
+        return "All"
+
+    try:
+        f = open(f"{path.py}{fileName}.py")
+
+    except FileNotFoundError:
+        print(f"{c.e}File not found!{c.p}\nChose Again...")
+        sleep(0.5)
+        return enterFile(startText, List, finalText)
+
+    f.close()
+    return fileName
+
+
+# =+=+=+=+=+=<
+#   enter File in Terminal
+
+
+def choseFile() -> object:
+
+    # st -> Start Text
+    startText = f"\n{c.p}Chose a file to compile!\n\n"
+
+    # i -> index
+    i = 0
+
+    # l -> List
+    list = getPythonFiles(["All Files"])
+
+    for t in list:
+        startText += f"{c.p}{i}. {c.s}{t}\n"
+        i += 1
+
+    return enterFile(startText, list, f"\n\n{c.p}Selected to Compile {c.i}{w}")
+
+
+# =+=+=+=+=+=>
+
+# =+=+=+=+=+=<
+#   Chose Map
+
+
+def choseMap(fileName: str = None) -> str:
+    # st -> Start Text
+    if fileName:
+        startText = f"\n{c.p}Chose a Map for {c.i}{fileName}.py{c.p}!\n\n"
+    else:
+        startText = f"\n{c.p}Chose a Map!\n\n"
+    i = 0
+    list = [""]
+    mapjson = loadJson("maps")
+    for map in mapjson:
+        i += 1
+        startText += f"{c.p}{i}. {c.s}{map}\n"
+        list.append(map)
+
+    return mapjson[
+        enter(
+            startText + f"\n{c.p}Chose a Map! \n>>> {c.i}",
+            list,
+            f"\n\n{c.p}Selected Map: {c.i}{w}",
+        )
+    ]
+
+
+# =+=+=+=+=+=>
+
+# =+=+=+=+=+=<
+#   Compiling Function
+
+
+def start():
+    fileName = choseFile()
+
+    print("\n\n")
+
+    if fileName == "All":
+        # for file in os.listdir(path.py):
+        files = getPythonFiles()
+        for t in files:
+            compile(t)
+        return
+
+    # map -> Map Chosen
+    compile(fileName, choseMap(fileName))
+
+
+def compile(fileName:str, map:str=None) -> None:
+    try:
+        json = loadJson(fileName,path.vr,".vrpython")
+
+    except FileNotFoundError:
+        json = loadJson("vrpython")
+
+    if not json["playground"] and not map:
+        json["playground"] = choseMap(fileName)
+
+    elif map:
+        json["playground"] = map
+
+    json["textContent"] = extractContents(fileName)
+
+    saveJson(path.vr,fileName + ".vrpython", json)
+
+    print(f"{c.p}Compiled {c.i}{fileName}.py{c.p} to {c.i}{fileName}.vrpython{c.p}!{c.r}")
+
+
+def extractContents(fileName: str) -> str:
+    file = open(f"{path.py}{fileName}.py")
+    fileContent = ""
+
+    for line in file:
+        if not re.findall(r"vex_start", line):
+            fileContent += line.rstrip("\n") + "\n"
+
+    fileContent += "\n\n\n"
+
+    for line in open(f"{path.py}Universal Threading.py"):
+        fileContent += line.rstrip("\n") + "\n"
+
+    file.close()
+
+    return fileContent
+
+
+# =+=+=+=+=+=>
+
+# =+=+=+=+=+=<
+#   End Program
+
+
 def endProgram():
-    print(f"\n\n{cPrimary}Bye!{cReset}\n")
+    print(f"{c.e}Keyboard Interruption!{c.p}\n\n\n\nBye!{c.r}\n\n")
     exit()
 
 
-#*=+=+=+=+=+ Start
-init()
+# =+=+=+=+=+=>
+
+
+try:
+    start()
+
+except KeyboardInterrupt:
+    endProgram()

@@ -80,7 +80,7 @@ We are also adding shortcuts, sensor detection, and the like to improve the effe
 - This must be the first line in main(), or else the custom settings would only act thoughout part of the program and mess up the program.
 - lets you choose the settings for the program.
 - options:
-    - unit= `(INCH|MM)`:   changes the unit the program is in, default is MM
+    - unit= `(INCH\|MM)`:   changes the unit the program is in, default is MM
     - strict= boolean: If True, syncs after every move
           - WARNING: slows down the bot, but improves accuracy.
 

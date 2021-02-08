@@ -34,6 +34,14 @@ class FORWARD:
     direction = "FORWARD"
 
 
+class LEFT:
+    direction = "LEFT"
+
+
+class RIGHT:
+    direction = "RIGHT"
+
+
 class REVERSE:
     direction = "REVERSE"
 
@@ -169,12 +177,19 @@ class pen:
     set_pen_color = lambda col: print(f"Set print color to {col}")
 
 
+def main(e):
+    pass
+
+
+def vr_thread(f):
+    vex_start(f)
+
 # *=+=+=+=+=+=+ Turtle :D
-from asyncio import run as asyncRun, iscoroutinefunction as iscoroutine, coroutine
+from math import pi, sin
+from asyncio import coroutine, iscoroutinefunction as iscoroutine, run as asyncRun
 from json import loads as jsonload
 from pathlib import Path
 from timeit import default_timer as timer
-from tkinter.constants import FIRST
 from turtle import *
 
 # *=+=+=+=+= Vars
@@ -237,6 +252,8 @@ def __init__():
 def __user__():
     global _user
     _user = Turtle()
+    _user.penup()
+    _user.pensize(5)
 
 
 def __border__():
@@ -376,7 +393,7 @@ def __map__():
 
 def vex_start(f):
     global __start
-    __start =  timer()
+    __start = timer()
     if not iscoroutine(f):
         f = coroutine(f)
     f(e)
@@ -394,9 +411,7 @@ def _moveto(t, c):
 
 
 def __endProgram__():
-    print(
-        f"\n\n{GREEN.color}Time Elasped: {round(timer() - __start,4)} Seconds"
-    )  # Time in seconds, e.g. 5.38091952400282
+    print(f"\n\n{GREEN.color}Time Elasped: {round(timer() - __start,4)} Seconds")
     input("Press any button to end!\n")
     print(f"{RESET.color}Bye!\n")
     exit()
@@ -420,10 +435,14 @@ def __pickup_drop__(target, endpoint):
 
 
 class e:
-    def init(unit=None, strict=None):
+    def init(self,unit=None, strict=None):
         global settings
         __init__()
         settings = settings()
+    
+    def __init__(self):
+        print("test")
+        self.init()
 
     def move(*targets):
         for t in targets:
@@ -450,3 +469,37 @@ class e:
                 raise Exception(
                     f"{arg} is not a pen action.\nThe valid actions are...\nChanging Color: [RED,GREEN,BLUE,BLACK]\nor Changing Position: [UP,DOWN]"
                 )
+
+    def polygon(
+        self, dir, sides: int, radius: float, heading: float = 0, sidesMax: int = None
+    ):
+        angle = 360 / sides
+        dist = sin(pi / sides) * radius
+        self.heading(heading + 90)
+        if not sidesMax:
+            sidesMax = sides
+        for i in range(sidesMax):
+            self.turn(dir, angle)
+            self.drive(FORWARD, dist)
+
+    def drive(dir, dist):
+        if dir == FORWARD:
+            _user.forward(dist)
+        elif dir == REVERSE:
+            _user.back(dist)
+        else:
+            raise Exception(
+                f"{RED.color}{dir} is not a valid direction!\n Use FORWARD or REVERSE!{RESET.color}"
+            )
+
+    def turn(dir, angle):
+        if dir == LEFT:
+            _user.left(angle)
+        elif dir == RIGHT:
+            _user.right(angle)
+        else:
+            raise Exception(
+                f"{RED.color}{dir} is not a valid direction!\n Use RIGHT or LEFT!{RESET.color}"
+            )
+
+    heading = lambda angle=0: _user.setheading(angle)
